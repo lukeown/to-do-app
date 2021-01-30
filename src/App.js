@@ -11,6 +11,10 @@ const app = props => {
         {taskName: 'Finish To Do List Project', duration: '120', importance: '!!!'}
       ],
     });
+     // uses multiple useState calls with different state slices
+    const [otherState, setOtherState] = useState('some other value')
+
+    console.log(tasksState, otherState)
 
     const switchTaskHandler = () => {
       setTasksState({ //This passes the following tasks when the 'Switch Task' button is clicked
