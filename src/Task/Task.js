@@ -7,10 +7,11 @@ const task = (props) => {
     return (
         <div>
             
-            <p>{props.taskName} - {props.duration} min. - {props.importance}</p>
+            <p onClick={props.click}>{props.taskName} - {props.duration} min. - {props.importance}</p>
             <p>{props.children}</p>
         </div>
-    )
+        //onClick for props.click references the click property in tasks
+            )
 };
 
 export default task;
