@@ -8,9 +8,9 @@ const task = (props) => {
     return (
         <div className="Task">
             
-            <p onClick={props.click}>{props.taskName} - {props.duration} min. - {props.importance}</p>
+            <p onClick={props.click}>{props.name} - {props.duration} min. - {props.importance}</p>
             <p>{props.children}</p>
-            <input type="text" onChange={props.changed} value={props.taskName}/>
+            <input type="text" onChange={props.changed} value={props.name}/>
         </div>
         //onClick for props.click references the click property in tasks
             )

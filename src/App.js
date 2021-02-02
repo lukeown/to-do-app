@@ -43,7 +43,7 @@ class App extends Component {
 
   toggleTasksHandler = () => {
     const doesShow = this.state.showTasks;
-    this.setState({showTasks: !doesShow}); //converts doesShow to other boolean
+    this.setState({ showTasks: !doesShow }); //converts doesShow to other boolean
   }
 
   render() {
@@ -63,30 +63,13 @@ class App extends Component {
     if (this.state.showTasks) {
       tasks = (
         <div>
-          <Task 
-            taskName={this.state.tasks[0].taskName} 
-            duration={this.state.tasks[0].duration} 
-            importance={this.state.tasks[0].importance}
-            changed={this.taskChangedHandler}
-            
-            />
-          <Task 
-            taskName={this.state.tasks[1].taskName} 
-            duration={this.state.tasks[1].duration} 
-            importance={this.state.tasks[1].importance}
-            click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}
-            changed={this.taskChangedHandler}/> 
-            {/* click is triggered by the p onClick event in Task.js 
-                - clicking this line will call the switchTaskHandler function 
-            */}
-          <Task 
-            taskName={this.state.tasks[2].taskName} 
-            duration={this.state.tasks[2].duration} 
-            importance={this.state.tasks[2].importance}/>
-          <Task 
-            taskName={this.state.tasks[3].taskName} 
-            duration={this.state.tasks[3].duration} 
-            importance={this.state.tasks[3].importance}/>
+          {this.state.tasks.map(task => { //this function is executed on every element in the tasks array
+            return <Task
+              name={task.taskName}
+              duration={task.duration}
+              importance={task.importance}/>
+          })}
+          
         </div>
       )
     }
@@ -102,7 +85,7 @@ class App extends Component {
         <button 
           style={style}
           onClick={this.toggleTasksHandler}>Switch Task</button>
-          {tasks}
+        {tasks}
         
         
       </div>
