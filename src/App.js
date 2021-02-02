@@ -56,22 +56,12 @@ class App extends Component {
       margin: '4px',
       cursor: 'pointer',
       boxShadow: '0 2px 3px grey'
+    };
 
-    }
-    return (
-      <div className="App">
-        <h1>To Do List</h1>
-        <p>Click Switch Task button for new tasks</p>
-        <button 
-          style={style}
-          onClick={this.toggleTasksHandler}>Switch Task</button>
-        {/* Explanation of .bind(this, "") - this controls what this.setState will refer to --
-            By binding this to the outside of the switchTaskHandler function, we are binding 
-            it to the class
-            Another way you could do this is with a function: onclick= {() => this.switchNameHandler('insert desired string here')}
-            This way isn't as efficient and can cause react to rerender this too many times. bind syntax is better for this
-        */}
-        { this.state.showTasks ? //checks to see whether showTasks is True - only renders if True
+    let tasks = null;
+
+    if (this.state.showTasks) {
+      tasks = (
         <div>
           <Task 
             taskName={this.state.tasks[0].taskName} 
@@ -97,12 +87,34 @@ class App extends Component {
             taskName={this.state.tasks[3].taskName} 
             duration={this.state.tasks[3].duration} 
             importance={this.state.tasks[3].importance}/>
-        </div> : null //if showTasks is false, null is rendered
-        } 
+        </div>
+      )
+    }
+
+    //this way of handling the task toggler is better because it essentially outsources--
+    //the jsx check from the start of the return to a variable we conditionally assign before returning (tasks variable)
+    //we're still returning the same information, but the tasks variable just referenced through {tasks} instead of handling everything on return
+
+    return (
+      <div className="App">
+        <h1>To Do List</h1>
+        <p>Click Switch Task button for new tasks</p>
+        <button 
+          style={style}
+          onClick={this.toggleTasksHandler}>Switch Task</button>
+          {tasks}
+        
+        
       </div>
-    ); // Person is calling the Person function in person.js. When inspected, just the HTML that's exported is displayed
-       // button refers to const switchTaskHandler function
+    ); // Task is calling the Task function in task.js. When inspected, just the HTML that's exported is displayed
+       // button refers to the toggleTaskHandler function
   }
 }
+// Explanation of .bind(this, "") - this controls what this.setState will refer to --
+// By binding this to the outside of the switchTaskHandler function, we are binding 
+// it to the class
+// Another way you could do this is with a function: onclick= {() => this.switchNameHandler('insert desired string here')}
+// This way isn't as efficient and can cause react to rerender this too many times. bind syntax is better for this
+
 
 export default App;
