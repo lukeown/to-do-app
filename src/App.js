@@ -1,42 +1,36 @@
 import React, { Component } from 'react';
 import './App.css';
-import Task from './Task/Task'; //imports Task component from Task.js
+import Task from './Task/Task'; //imports Task component from Task.js;
+import TaskInput from './TaskInput/TaskInput'
 
 class App extends Component {
   state = {
-    tasks: [
-      {taskName: 'Do Dishes', duration: '30', importance: '!'},
-      {taskName: 'Clean Desk', duration: '10', importance: '!'},
-      {taskName: 'Make Dinner', duration: '50', importance: '!!'},
-      {taskName: 'Finish To Do List Project', duration: '120', importance: '!!!'}
-    ],
-    otherState: 'some other value'
-  };
+    taskName: 'Task Name', duration: 'Task Duration', importance: 'Task Importance: !-!!!!'};
+    
 
-  switchTaskHandler = (newTask) => {
-    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      tasks: [ 
-        //This passes the following tasks when the 'Switch Task' button is clicked
-        {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
-        {taskName: newTask, duration: '5', importance: '!!!'},
-        {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
-        {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
-      ] 
-    });
+  addTaskHandler = (newTask, newDuration, newImportance) => {
+    this.setState( 
+      {taskName: newTask.target.value, duration: newDuration.target.value, importance: newImportance.target.value}
+    );
   };
+  // switchTaskHandler = (newTask) => {
+  //   // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
+  //   this.setState({
+  //     tasks: [ 
+  //       //This passes the following tasks when the 'Switch Task' button is clicked
+  //       {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
+  //       {taskName: newTask, duration: '5', importance: '!!!'},
+  //       {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
+  //       {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
+  //     ] 
+  //   });
+  // };
 
   taskChangedHandler = (event) => {
     // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      tasks: [ 
-        //This passes the following tasks when the 'Switch Task' button is clicked
-        {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
-        {taskName: event.target.value, duration: '5', importance: '!!!'},
-        {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
-        {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
-      ] 
-    });
+    let { task, taskName, duration, importance } = this.state
+    task.push(taskName, duration, importance);
+    
   };
 
   render() {
@@ -57,40 +51,28 @@ class App extends Component {
         <p>Click Switch Task button for new tasks</p>
         <button 
           style={style}
-          onClick={this.switchTaskHandler.bind(this, "You want MORE tasks? Fine, click me for another")}>Switch Task</button>
+          onClick={this.addTaskHandler}>New Task</button>
         {/* Explanation of .bind(this, "") - this controls what this.setState will refer to --
             By binding this to the outside of the switchTaskHandler function, we are binding 
             it to the class
             Another way you could do this is with a function: onclick= {() => this.switchNameHandler('insert desired string here')}
             This way isn't as efficient and can cause react to rerender this too many times. bind syntax is better for this
         */}
+        <ol>
         <Task 
-          taskName={this.state.tasks[0].taskName} 
-          duration={this.state.tasks[0].duration} 
-          importance={this.state.tasks[0].importance}
-          changed={this.taskChangedHandler}
-          
-          />
-        <Task 
-          taskName={this.state.tasks[1].taskName} 
-          duration={this.state.tasks[1].duration} 
-          importance={this.state.tasks[1].importance}
-          click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}
-          changed={this.taskChangedHandler}/> 
+          taskName={this.taskChangedHandler.bind(this)} 
+          duration={this.taskChangedHandler.bind(this)} 
+          importance={this.taskChangedHandler.bind(this)}/>
           {/* click is triggered by the p onClick event in Task.js 
               - clicking this line will call the switchTaskHandler function 
           */}
-        <Task 
-          taskName={this.state.tasks[2].taskName} 
-          duration={this.state.tasks[2].duration} 
-          importance={this.state.tasks[2].importance}/>
-        <Task 
-          taskName={this.state.tasks[3].taskName} 
-          duration={this.state.tasks[3].duration} 
-          importance={this.state.tasks[3].importance}/>
+        </ol>
+        <TaskInput 
+          changed={this.taskChangedHandler.bind(this)}
+        />
       </div>
-    ); // Person is calling the Person function in person.js. When inspected, just the HTML that's exported is displayed
-       // button refers to const switchTaskHandler function
+    );
+       // button refers to const addTaskHandler function
   }
 }
 
