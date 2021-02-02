@@ -10,7 +10,8 @@ class App extends Component {
       {taskName: 'Make Dinner', duration: '50', importance: '!!'},
       {taskName: 'Finish To Do List Project', duration: '120', importance: '!!!'}
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    showTasks: false
   };
 
   switchTaskHandler = (newTask) => {
@@ -39,6 +40,12 @@ class App extends Component {
     });
   };
 
+
+  toggleTasksHandler = () => {
+    const doesShow = this.state.showTasks;
+    this.setState({showTasks: !doesShow}); //converts doesShow to other boolean
+  }
+
   render() {
     const style = {
       backgroundColor: 'white',
@@ -57,37 +64,41 @@ class App extends Component {
         <p>Click Switch Task button for new tasks</p>
         <button 
           style={style}
-          onClick={this.switchTaskHandler.bind(this, "You want MORE tasks? Fine, click me for another")}>Switch Task</button>
+          onClick={this.toggleTasksHandler}>Switch Task</button>
         {/* Explanation of .bind(this, "") - this controls what this.setState will refer to --
             By binding this to the outside of the switchTaskHandler function, we are binding 
             it to the class
             Another way you could do this is with a function: onclick= {() => this.switchNameHandler('insert desired string here')}
             This way isn't as efficient and can cause react to rerender this too many times. bind syntax is better for this
         */}
-        <Task 
-          taskName={this.state.tasks[0].taskName} 
-          duration={this.state.tasks[0].duration} 
-          importance={this.state.tasks[0].importance}
-          changed={this.taskChangedHandler}
-          
-          />
-        <Task 
-          taskName={this.state.tasks[1].taskName} 
-          duration={this.state.tasks[1].duration} 
-          importance={this.state.tasks[1].importance}
-          click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}
-          changed={this.taskChangedHandler}/> 
-          {/* click is triggered by the p onClick event in Task.js 
-              - clicking this line will call the switchTaskHandler function 
-          */}
-        <Task 
-          taskName={this.state.tasks[2].taskName} 
-          duration={this.state.tasks[2].duration} 
-          importance={this.state.tasks[2].importance}/>
-        <Task 
-          taskName={this.state.tasks[3].taskName} 
-          duration={this.state.tasks[3].duration} 
-          importance={this.state.tasks[3].importance}/>
+        { this.state.showTasks ? //checks to see whether showTasks is True - only renders if True
+        <div>
+          <Task 
+            taskName={this.state.tasks[0].taskName} 
+            duration={this.state.tasks[0].duration} 
+            importance={this.state.tasks[0].importance}
+            changed={this.taskChangedHandler}
+            
+            />
+          <Task 
+            taskName={this.state.tasks[1].taskName} 
+            duration={this.state.tasks[1].duration} 
+            importance={this.state.tasks[1].importance}
+            click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}
+            changed={this.taskChangedHandler}/> 
+            {/* click is triggered by the p onClick event in Task.js 
+                - clicking this line will call the switchTaskHandler function 
+            */}
+          <Task 
+            taskName={this.state.tasks[2].taskName} 
+            duration={this.state.tasks[2].duration} 
+            importance={this.state.tasks[2].importance}/>
+          <Task 
+            taskName={this.state.tasks[3].taskName} 
+            duration={this.state.tasks[3].duration} 
+            importance={this.state.tasks[3].importance}/>
+        </div> : null //if showTasks is false, null is rendered
+        } 
       </div>
     ); // Person is calling the Person function in person.js. When inspected, just the HTML that's exported is displayed
        // button refers to const switchTaskHandler function
