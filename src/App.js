@@ -26,12 +26,38 @@ class App extends Component {
     });
   };
 
+  taskChangedHandler = (event) => {
+    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
+    this.setState({
+      tasks: [ 
+        //This passes the following tasks when the 'Switch Task' button is clicked
+        {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
+        {taskName: event.target.value, duration: '5', importance: '!!!'},
+        {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
+        {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
+      ] 
+    });
+  };
+
   render() {
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '4px white solid',
+      borderRadius: '6px',
+      padding: '8px',
+      margin: '4px',
+      cursor: 'pointer',
+      boxShadow: '0 2px 3px grey'
+
+    }
     return (
       <div className="App">
         <h1>To Do List</h1>
         <p>Click Switch Task button for new tasks</p>
-        <button onClick={this.switchTaskHandler.bind(this, "You want MORE tasks? Fine, click me for another")}>Switch Task</button>
+        <button 
+          style={style}
+          onClick={this.switchTaskHandler.bind(this, "You want MORE tasks? Fine, click me for another")}>Switch Task</button>
         {/* Explanation of .bind(this, "") - this controls what this.setState will refer to --
             By binding this to the outside of the switchTaskHandler function, we are binding 
             it to the class
@@ -41,12 +67,16 @@ class App extends Component {
         <Task 
           taskName={this.state.tasks[0].taskName} 
           duration={this.state.tasks[0].duration} 
-          importance={this.state.tasks[0].importance}/>
+          importance={this.state.tasks[0].importance}
+          changed={this.taskChangedHandler}
+          
+          />
         <Task 
           taskName={this.state.tasks[1].taskName} 
           duration={this.state.tasks[1].duration} 
           importance={this.state.tasks[1].importance}
-          click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}/> 
+          click={this.switchTaskHandler.bind(this, "You're wild. Fine, go organize the boxes of stuff in the living room.")}
+          changed={this.taskChangedHandler}/> 
           {/* click is triggered by the p onClick event in Task.js 
               - clicking this line will call the switchTaskHandler function 
           */}
