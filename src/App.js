@@ -5,45 +5,43 @@ import Task from './Task/Task'; //imports Task component from Task.js
 class App extends Component {
   state = {
     tasks: [
-      {taskName: 'Do Dishes', duration: '30', importance: '!'},
-      {taskName: 'Clean Desk', duration: '10', importance: '!'},
-      {taskName: 'Make Dinner', duration: '50', importance: '!!'},
-      {taskName: 'Finish To Do List Project', duration: '120', importance: '!!!'}
+      {id: 'boidi', taskName: 'Do Dishes', duration: '30', importance: '!'},
+      {id: 'ihnig', taskName: 'Clean Desk', duration: '10', importance: '!'},
+      {id: 'skdjr', taskName: 'Make Dinner', duration: '50', importance: '!!'},
+      {id: 'ijgrl', taskName: 'Finish To Do List Project', duration: '120', importance: '!!!'}
     ],
     otherState: 'some other value',
     showTasks: false
   };
 
-  switchTaskHandler = (newTask) => {
+
+  taskChangedHandler = ( event, id ) => {
     // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      tasks: [ 
-        //This passes the following tasks when the 'Switch Task' button is clicked
-        {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
-        {taskName: newTask, duration: '5', importance: '!!!'},
-        {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
-        {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
-      ] 
+    const taskIndex = this.state.tasks.findIndex(p => {
+      return p.id === id;
     });
+
+    const task = {
+      ...this.state.tasks[taskIndex]
+    };
+    
+    task.name = event.target.value;
+
+    const tasks = [...this.state.tasks];
+    tasks[taskIndex] = task;
+
+    this.setState( {tasks: tasks} );
   };
 
-  taskChangedHandler = (event) => {
-    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      tasks: [ 
-        //This passes the following tasks when the 'Switch Task' button is clicked
-        {taskName: 'Do Laundry', duration: 'passive', importance: '!'},
-        {taskName: event.target.value, duration: '5', importance: '!!!'},
-        {taskName: 'Clean out fridge', duration: '20', importance: '!!'},
-        {taskName: 'Finish To Do List Project (thought you were gonna get out of this one?)', duration: 'whatever it takes, do not give up.', importance: '!!!!'}
-      ] 
-    });
-  };
-
+  deleteTaskHandler = (taskIndex) => {
+    const tasks = [...this.state.tasks]
+    tasks.splice(taskIndex, 1);
+    this.setState({tasks: tasks})
+  }
 
   toggleTasksHandler = () => {
     const doesShow = this.state.showTasks;
-    this.setState({ showTasks: !doesShow }); //converts doesShow to other boolean
+    this.setState( {showTasks: !doesShow} ); //converts doesShow to other boolean
   }
 
   render() {
@@ -60,14 +58,18 @@ class App extends Component {
 
     let tasks = null;
 
-    if (this.state.showTasks) {
+    if ( this.state.showTasks ) {
       tasks = (
         <div>
-          {this.state.tasks.map(task => { //this function is executed on every element in the tasks array
+          {this.state.tasks.map((task, index) => { //this function is executed on every element in the tasks array
             return <Task
+              click={() => this.deleteTaskHandler(index)}
               name={task.taskName}
               duration={task.duration}
-              importance={task.importance}/>
+              importance={task.importance}
+              key={task.id}
+              changed={(event) => this.taskChangedHandler(event, task.id)}
+              />
           })}
           
         </div>
@@ -81,7 +83,6 @@ class App extends Component {
     return (
       <div className="App">
         <h1>To Do List</h1>
-        <p>Click Switch Task button for new tasks</p>
         <button 
           style={style}
           onClick={this.toggleTasksHandler}>Switch Task</button>
