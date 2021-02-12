@@ -7,3 +7,18 @@
 .bold {
   font-weight: bold;
 }
+.button {
+  background-color: #48c2af;
+  color: white;
+  font: inherit;
+  border: 4px #48c2af solid;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 3px grey;
+}
+.button:hover {
+    background-color: #9CD1A9;
+    border: 4px #48c2af solid;
+}
