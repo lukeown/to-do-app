@@ -1,6 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
+import styled from 'styled-components';
 import Task from './Task/Task'; //imports Task component from Task.js
+
+const StyledButton = styled.button`
+  background-color: ${props => props.alt ? '#48c2af' : '#9CD1A9'};
+  color: white;
+  font: inherit;
+  border: 4px #48c2af solid;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 3px grey;
+  &:hover {
+    background-color: ${props => props.alt ? '#9CD1A9' : '#48c2af'};
+    border: 4px #48c2af solid;
+  }
+`;
 
 class App extends Component {
   state = {
@@ -46,14 +63,18 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: '#48c2af',
+      color: 'white',
       font: 'inherit',
-      border: '4px white solid',
+      border: '4px #48c2af solid',
       borderRadius: '6px',
       padding: '8px',
       margin: '4px',
       cursor: 'pointer',
-      boxShadow: '0 2px 3px grey'
+      boxShadow: '0 2px 3px grey',
+      ':hover': {
+        color: 'black'
+      }
     };
 
     let tasks = null;
@@ -73,7 +94,22 @@ class App extends Component {
           })}
           
         </div>
-      )
+      );
+
+      style.backgroundColor = '#7bd4c6';
+      style[':hover'] =  {
+        backgroundColor: 'lightblue',
+        color: 'green'
+      };
+      style.border = '4px #7bd4c6 solid';
+    }
+
+    const classes = [];
+    if (this.state.tasks.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.tasks.length <= 1) {
+      classes.push('bold');
     }
 
     //this way of handling the task toggler is better because it essentially outsources--
@@ -82,10 +118,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>To Do List</h1>
-        <button 
-          style={style}
-          onClick={this.toggleTasksHandler}>Switch Task</button>
+        <h1 className={classes.join(' ')}>Today's Tasks</h1>
+        <StyledButton alt={this.state.showTasks} onClick={this.toggleTasksHandler}>
+          Show Current Tasks
+        </StyledButton>
         {tasks}
         
         
